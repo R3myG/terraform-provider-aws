@@ -74,6 +74,13 @@ func (p *servicePackage) SDKDataSources(ctx context.Context) []*inttypes.Service
 			Region:   unique.Make(inttypes.ResourceRegionDefault()),
 		},
 		{
+			Factory:  dataSourceConsumableResource,
+			TypeName: "aws_batch_consumable_resource",
+			Name:     "Consumable Resource",
+			Tags:     unique.Make(inttypes.ServicePackageResourceTags{}),
+			Region:   unique.Make(inttypes.ResourceRegionDefault()),
+		},
+		{
 			Factory:  dataSourceJobQueue,
 			TypeName: "aws_batch_job_queue",
 			Name:     "Job Queue",
@@ -96,6 +103,15 @@ func (p *servicePackage) SDKResources(ctx context.Context) []*inttypes.ServicePa
 			Factory:  resourceComputeEnvironment,
 			TypeName: "aws_batch_compute_environment",
 			Name:     "Compute Environment",
+			Tags: unique.Make(inttypes.ServicePackageResourceTags{
+				IdentifierAttribute: names.AttrARN,
+			}),
+			Region: unique.Make(inttypes.ResourceRegionDefault()),
+		},
+		{
+			Factory:  resourceConsumableResource,
+			TypeName: "aws_batch_consumable_resource",
+			Name:     "Consumable Resource",
 			Tags: unique.Make(inttypes.ServicePackageResourceTags{
 				IdentifierAttribute: names.AttrARN,
 			}),
