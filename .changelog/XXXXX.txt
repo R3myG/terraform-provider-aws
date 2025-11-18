@@ -1,0 +1,7 @@
+```release-note:new-resource
+aws_batch_consumable_resource
+```
+
+```release-note:new-data-source
+aws_batch_consumable_resource
+```
