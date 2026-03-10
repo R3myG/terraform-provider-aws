@@ -55,10 +55,10 @@ func dataSourceConsumableResourceRead(ctx context.Context, d *schema.ResourceDat
 		return sdkdiag.AppendFromErr(diags, tfresource.SingularDataSourceFindError("Batch Consumable Resource", err))
 	}
 
-	d.SetId(aws.ToString(consumableResource.Arn))
+	d.SetId(aws.ToString(consumableResource.ConsumableResourceArn))
 	d.Set(names.AttrName, consumableResource.ConsumableResourceName)
 	d.Set(names.AttrResourceType, consumableResource.ResourceType)
-	d.Set("total_quantity", consumableResource.TotalQuantity)
+	d.Set("total_quantity", aws.ToInt64(consumableResource.TotalQuantity))
 
 	setTagsOut(ctx, consumableResource.Tags)
 

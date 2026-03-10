@@ -8,7 +8,7 @@ import (
 	"fmt"
 	"testing"
 
-	awstypes "github.com/aws/aws-sdk-go-v2/service/batch/types"
+	"github.com/aws/aws-sdk-go-v2/service/batch"
 	sdkacctest "github.com/hashicorp/terraform-plugin-testing/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -21,7 +21,7 @@ import (
 
 func TestAccBatchConsumableResource_basic(t *testing.T) {
 	ctx := acctest.Context(t)
-	var consumableResource1 awstypes.ConsumableResourceDetail
+	var consumableResource1 batch.DescribeConsumableResourceOutput
 	resourceName := "aws_batch_consumable_resource.test"
 	rName := sdkacctest.RandomWithPrefix(acctest.ResourcePrefix)
 
@@ -53,7 +53,7 @@ func TestAccBatchConsumableResource_basic(t *testing.T) {
 
 func TestAccBatchConsumableResource_update(t *testing.T) {
 	ctx := acctest.Context(t)
-	var consumableResource1, consumableResource2 awstypes.ConsumableResourceDetail
+	var consumableResource1, consumableResource2 batch.DescribeConsumableResourceOutput
 	resourceName := "aws_batch_consumable_resource.test"
 	rName := sdkacctest.RandomWithPrefix(acctest.ResourcePrefix)
 
@@ -83,7 +83,7 @@ func TestAccBatchConsumableResource_update(t *testing.T) {
 
 func TestAccBatchConsumableResource_disappears(t *testing.T) {
 	ctx := acctest.Context(t)
-	var consumableResource1 awstypes.ConsumableResourceDetail
+	var consumableResource1 batch.DescribeConsumableResourceOutput
 	resourceName := "aws_batch_consumable_resource.test"
 	rName := sdkacctest.RandomWithPrefix(acctest.ResourcePrefix)
 
@@ -107,7 +107,7 @@ func TestAccBatchConsumableResource_disappears(t *testing.T) {
 
 func TestAccBatchConsumableResource_tags(t *testing.T) {
 	ctx := acctest.Context(t)
-	var consumableResource1, consumableResource2, consumableResource3 awstypes.ConsumableResourceDetail
+	var consumableResource1, consumableResource2, consumableResource3 batch.DescribeConsumableResourceOutput
 	resourceName := "aws_batch_consumable_resource.test"
 	rName := sdkacctest.RandomWithPrefix(acctest.ResourcePrefix)
 
@@ -151,7 +151,7 @@ func TestAccBatchConsumableResource_tags(t *testing.T) {
 	})
 }
 
-func testAccCheckConsumableResourceExists(ctx context.Context, n string, v *awstypes.ConsumableResourceDetail) resource.TestCheckFunc {
+func testAccCheckConsumableResourceExists(ctx context.Context, n string, v *batch.DescribeConsumableResourceOutput) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
