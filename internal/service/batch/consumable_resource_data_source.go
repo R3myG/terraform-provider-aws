@@ -5,6 +5,7 @@ package batch
 
 import (
 	"context"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -27,6 +28,18 @@ func dataSourceConsumableResource() *schema.Resource {
 			names.AttrARN: {
 				Type:     schema.TypeString,
 				Required: true,
+			},
+			"available_quantity": {
+				Type:     schema.TypeInt,
+				Computed: true,
+			},
+			names.AttrCreatedAt: {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
+			"in_use_quantity": {
+				Type:     schema.TypeInt,
+				Computed: true,
 			},
 			names.AttrName: {
 				Type:     schema.TypeString,
@@ -56,6 +69,11 @@ func dataSourceConsumableResourceRead(ctx context.Context, d *schema.ResourceDat
 	}
 
 	d.SetId(aws.ToString(consumableResource.ConsumableResourceArn))
+	d.Set("available_quantity", aws.ToInt64(consumableResource.AvailableQuantity))
+	if consumableResource.CreatedAt != nil {
+		d.Set(names.AttrCreatedAt, consumableResource.CreatedAt.Format(time.RFC3339))
+	}
+	d.Set("in_use_quantity", aws.ToInt64(consumableResource.InUseQuantity))
 	d.Set(names.AttrName, consumableResource.ConsumableResourceName)
 	d.Set(names.AttrResourceType, consumableResource.ResourceType)
 	d.Set("total_quantity", aws.ToInt64(consumableResource.TotalQuantity))

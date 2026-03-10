@@ -6,6 +6,7 @@ package batch
 import (
 	"context"
 	"log"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/batch"
@@ -39,6 +40,18 @@ func resourceConsumableResource() *schema.Resource {
 		Schema: map[string]*schema.Schema{
 			names.AttrARN: {
 				Type:     schema.TypeString,
+				Computed: true,
+			},
+			"available_quantity": {
+				Type:     schema.TypeInt,
+				Computed: true,
+			},
+			names.AttrCreatedAt: {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
+			"in_use_quantity": {
+				Type:     schema.TypeInt,
 				Computed: true,
 			},
 			names.AttrName: {
@@ -104,6 +117,11 @@ func resourceConsumableResourceRead(ctx context.Context, d *schema.ResourceData,
 	}
 
 	d.Set(names.AttrARN, cr.ConsumableResourceArn)
+	d.Set("available_quantity", aws.ToInt64(cr.AvailableQuantity))
+	if cr.CreatedAt != nil {
+		d.Set(names.AttrCreatedAt, cr.CreatedAt.Format(time.RFC3339))
+	}
+	d.Set("in_use_quantity", aws.ToInt64(cr.InUseQuantity))
 	d.Set(names.AttrName, cr.ConsumableResourceName)
 	d.Set(names.AttrResourceType, cr.ResourceType)
 	d.Set("total_quantity", aws.ToInt64(cr.TotalQuantity))
